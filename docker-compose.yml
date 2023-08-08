@@ -2,7 +2,7 @@
 version: '3'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.3.1
+    image: confluentinc/cp-zookeeper:7.4.1
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -12,7 +12,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    image: confluentinc/cp-server:7.3.1
+    image: confluentinc/cp-server:7.4.1
     hostname: broker
     container_name: broker
     depends_on:
@@ -42,7 +42,7 @@ services:
       KAFKA_CREATE_TOPICS: "USERS--SRC:1:1,USERS--TRANSFORMED--STRM:1:1"
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:7.3.1
+    image: confluentinc/cp-enterprise-control-center:7.4.1
     hostname: control-center
     container_name: control-center
     depends_on:
@@ -58,7 +58,7 @@ services:
       PORT: 9021
 
   tempo:
-    image: grafana/tempo:latest
+    image: grafana/tempo:2.2.0
     command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
       - ./docker/grafana-config/tempo.yaml:/etc/tempo.yaml
@@ -72,7 +72,7 @@ services:
       - "9411:9411"   # zipkin
 
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.37.9
     command:
       - --config.file=/etc/prometheus.yaml
       - --web.enable-remote-write-receiver
@@ -86,13 +86,13 @@ services:
          #- "host.docker.internal:127.0.0.1" for linux
 
   loki:
-    image: grafana/loki:2.8.0
+    image: grafana/loki:2.8.3
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
 
   grafana:
-    image: grafana/grafana:9.4.3
+    image: grafana/grafana:10.0.3
     volumes:
       - ./docker/grafana-config/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
     environment:
