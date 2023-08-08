@@ -1,0 +1,38 @@
+app:
+  streams:
+    inbound-topic: USERS--SRC
+    outbound-topic: USERS--TRANSFORMED--STRM
+
+server.port: 10081
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    streams:
+      application-id: example-kafka-streams-processor
+      properties:
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
+        spring.json.trusted.packages: '*'
+        num.stream.threads: 1
+
+management:
+  metrics:
+    enable:
+      http: true
+      jvm: true
+      process: true
+      system: true
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+  server:
+    port: 10081
+
+logging.pattern.console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %mdc - %msg %n'"

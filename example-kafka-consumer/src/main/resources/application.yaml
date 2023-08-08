@@ -1,0 +1,32 @@
+app:
+  consumer:
+    topic: USERS--TRANSFORMED--STRM
+
+server.port: 10082
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: example.kafka.consumer
+      properties:
+        spring.json.trusted.packages: '*'
+
+management:
+  metrics:
+    enable:
+      http: true
+      jvm: true
+      process: true
+      system: true
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+  server:
+    port: 10082
+
+logging.pattern.console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %mdc - %msg %n'"

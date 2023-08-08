@@ -1,0 +1,38 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'localhost:9090' ]
+  - job_name: 'tempo'
+    static_configs:
+      - targets: [ 'tempo:3200' ]
+
+  # Producer
+  - job_name: 'kafka-producer-actuator'
+    static_configs:
+      - targets: [ 'host.docker.internal:10080' ]
+    metrics_path: "/actuator/prometheus"
+  - job_name: 'kafka-producer-otel'
+    static_configs:
+      - targets: [ 'host.docker.internal:9464' ]
+
+  # Streams Processor
+  - job_name: 'kafka-streams-processor-actuator'
+    static_configs:
+      - targets: [ 'host.docker.internal:10081' ]
+    metrics_path: "/actuator/prometheus"
+  - job_name: 'kafka-streams-processor-otel'
+    static_configs:
+      - targets: [ 'host.docker.internal:9465' ]
+
+  # Consumer
+  - job_name: 'kafka-consumer-actuator'
+    static_configs:
+      - targets: [ 'host.docker.internal:10082' ]
+    metrics_path: "/actuator/prometheus"
+  - job_name: 'kafka-consumer-otel'
+    static_configs:
+      - targets: [ 'host.docker.internal:9466' ]

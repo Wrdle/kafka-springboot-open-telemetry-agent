@@ -1,0 +1,31 @@
+app:
+  producer:
+    topic: USERS--SRC
+    repetitions: 10
+    sendDelaysMs: 2000
+
+server.port: 10080
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+management:
+  metrics:
+    enable:
+      http: true
+      jvm: true
+      process: true
+      system: true
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+  server:
+    port: 10080
+
+logging.pattern.console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %mdc - %msg %n'"
